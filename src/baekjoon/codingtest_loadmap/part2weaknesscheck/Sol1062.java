@@ -1,4 +1,4 @@
-package baekjoon.codingtest_loadmap;
+package baekjoon.codingtest_loadmap.part2weaknesscheck;
 
 import java.io.BufferedReader;
 import java.io.IOException;
