@@ -1,6 +1,10 @@
 package baekjoon.codingtest_loadmap;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Sol1062 {
     //가르침
@@ -8,17 +12,17 @@ public class Sol1062 {
     static boolean[] alphabet;
     static String[] word;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        k = sc.nextInt();
-        sc.nextLine();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        k = Integer.parseInt(st.nextToken());
 
         alphabet = new boolean[26];
         word = new String[n];
         for (int i = 0; i < n; ++i) {
-            String tmp = sc.nextLine();
-            word[i] = tmp.substring(4, tmp.length()-4);
+            String tmp = br.readLine();
+            word[i] = tmp;
         }
 
         alphabet['a' - 'a'] = true;
