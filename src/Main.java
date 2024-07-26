@@ -4,6 +4,8 @@ class Main {
         Scanner sc=new Scanner(System.in);
         int n=sc.nextInt();
         dfs(n);
+
+
     }
     public static void dfs(int n){
         if(n==0){
