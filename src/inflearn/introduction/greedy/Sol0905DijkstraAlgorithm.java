@@ -1,7 +1,7 @@
 package inflearn.introduction.greedy;
 
 import java.util.*;
-public class Sol0905DiXtremeAlogorithm {
+public class Sol0905DijkstraAlgorithm {
     //입력 예제
 //     6 9
 //     1 2 12
