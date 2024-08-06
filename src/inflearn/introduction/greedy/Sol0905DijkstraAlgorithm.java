@@ -1,6 +1,7 @@
 package inflearn.introduction.greedy;
 
 import java.util.*;
+
 public class Sol0905DijkstraAlgorithm {
     //입력 예제
 //     6 9
@@ -21,6 +22,7 @@ public class Sol0905DijkstraAlgorithm {
     //6 : impossible
     static ArrayList<ArrayList<Point>> list;
     static int[] arr;
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
@@ -41,7 +43,7 @@ public class Sol0905DijkstraAlgorithm {
         for (int i = 2; i <= n; ++i) {
             if (arr[i] == Integer.MAX_VALUE) {
                 System.out.println(i + " : impossible");
-            }else{
+            } else {
                 System.out.println(i + " : " + arr[i]);
             }
         }
@@ -54,7 +56,8 @@ public class Sol0905DijkstraAlgorithm {
             Point tmp = pQ.poll();
             int currentNode = tmp.nextNode;
             int currentWeight = tmp.weight;
-            if(arr[currentNode]<tmp.weight) continue;
+
+            if (arr[currentNode] < currentWeight) continue;//arr[현재노드] 값보다 가중치값이 크면 갱신할필요가 x, 없으면 시간복잡도 상승
             for (Point p : list.get(currentNode)) {
                 if (arr[p.nextNode] > currentWeight + p.weight) {
                     arr[p.nextNode] = currentWeight + p.weight;
@@ -63,7 +66,8 @@ public class Sol0905DijkstraAlgorithm {
             }
         }
     }
-    public static class Point implements Comparable<Point>{
+
+    public static class Point implements Comparable<Point> {
         int nextNode;
         int weight;
 
@@ -71,8 +75,9 @@ public class Sol0905DijkstraAlgorithm {
             this.nextNode = nextNode;
             this.weight = weight;
         }
+
         @Override
-        public int compareTo(Point o){
+        public int compareTo(Point o) {
             return weight - o.weight;
         }
     }
