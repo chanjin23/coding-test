@@ -23,6 +23,14 @@ public class Sol11478 {
                 rt++;
             }
         }
+
+        //다른풀이
+//        for (int i = 0; i < str.length(); i++) {
+//            for (int j = i + 1; j <= str.length(); j++) {
+//                set.add(str.substring(i, j));
+//            }
+//        }
+
 //        for (String string : set) {
 //            System.out.println(string);
 //        }
