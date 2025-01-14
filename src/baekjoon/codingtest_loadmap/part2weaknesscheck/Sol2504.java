@@ -11,7 +11,8 @@ public class Sol2504 {
         String n = sc.nextLine();
 
         String[] strs = n.split("");
-        int total=0;
+
+        int total = 0;
         Stack<String> stack = new Stack<>();
         for (int i = 0; i < strs.length; ++i) {
             String str = strs[i];
