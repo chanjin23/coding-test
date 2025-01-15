@@ -8,57 +8,59 @@ import java.util.StringTokenizer;
 
 public class Sol1062 {
     //가르침
-    static int k,max=0;
+    static String[] input;
     static boolean[] alphabet;
-    static String[] word;
+    static int k, answer = 0, n;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
+        n = Integer.parseInt(st.nextToken());
         k = Integer.parseInt(st.nextToken());
 
+        input = new String[n];
         alphabet = new boolean[26];
-        word = new String[n];
-        for (int i = 0; i < n; ++i) {
-            String tmp = br.readLine();
-            word[i] = tmp;
-        }
-
         alphabet['a' - 'a'] = true;
         alphabet['c' - 'a'] = true;
         alphabet['i' - 'a'] = true;
         alphabet['n' - 'a'] = true;
         alphabet['t' - 'a'] = true;
+        for (int i = 0; i < n; ++i) {
+            input[i] = br.readLine();
+        }
 
-        if(k<5) {
+        if (k < 5) {
             System.out.println(0);
             return;
+        } else if (k == 26) {
+            System.out.println(n);
+            return;
         }
-        dfs(0);
 
-        System.out.println(max);
+        dfs(0,0);
+        System.out.println(answer);
     }
 
-    private static void dfs(int level) {
-        if (k - 5 == level) {
-            int count =0;
-            for (int i = 0; i < word.length; ++i) {
-                boolean check=false;
-                for (char c : word[i].toCharArray()) {
-                    if(!alphabet[c-'a']) check=true;
+    public static void dfs(int alpha, int level) {
+        if (level == k - 5) {
+            int total = 0;
+            for (int i = 0; i < n; ++i) {
+                boolean flag = false;
+                for (char c : input[i].toCharArray()) {
+                    if (!alphabet[c - 'a']) {
+                        flag = true;
+                        break;
+                    }
                 }
-                if(!check) count++;
+                if (!flag) total++;
             }
-            max = Math.max(max, count);
+            answer = Math.max(total, answer);
         } else {
-            for (int i = 0; i < word.length; ++i) {
-                for (char c : word[i].toCharArray()) {
-                    if (alphabet[c - 'a']) continue;
-
-                    alphabet[c-'a']=true;
-                    dfs(level + 1);
-                    alphabet[c-'a']=false;
+            for (int i = alpha; i < 26; ++i) {
+                if (!alphabet[i]) {
+                    alphabet[i] = true;
+                    dfs(i,level + 1);
+                    alphabet[i] = false;
                 }
             }
         }
