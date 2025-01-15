@@ -1,34 +1,36 @@
 package baekjoon.codingtest_loadmap.part2weaknesscheck;
 
-import java.util.Scanner;
+import java.util.*;
+import java.io.*;
 
 public class Sol14719 {
     //빗물
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int h = sc.nextInt();
-        int w = sc.nextInt();
-        int[][] arr = new int[h][w];
-        int total=0;
+    public static void main(String[] args) throws Exception{
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
+        int total = 0;
+        int h = Integer.parseInt(st.nextToken());
+        int w = Integer.parseInt(st.nextToken());
+        int[] height = new int[w];
+
+        st = new StringTokenizer(br.readLine());
         for (int i = 0; i < w; ++i) {
-            int height = sc.nextInt();
-            for (int j = 0; j < height; ++j) {
-                arr[j][i]=1;
-            }
+            height[i] = Integer.parseInt(st.nextToken());
         }
 
-        for (int i = 0; i < h; ++i) {
-            int count=0;
-            boolean check=false;
-            for (int j = 0; j < w; ++j) {
-                if(arr[i][j]==1) {
-                    total+=count;
-                    count=0;
-                    check=true;
-                }
-                else if(check && arr[i][j]==0) count++;
+        for (int i = 1; i < w - 1; ++i) {
+            int lt = 0;
+            int rt = 0;
+            for (int j = i - 1; j >= 0; j--) {
+                lt = Math.max(height[j], lt);
             }
+            for (int j = i + 1; j < w; ++j) {
+                rt = Math.max(height[j], rt);
+            }
+
+            int rain = Math.min(lt, rt) - height[i];
+            if(rain>0) total += rain;
         }
         System.out.println(total);
     }
