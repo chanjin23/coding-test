@@ -8,53 +8,47 @@ public class Sol1700 {
     public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int count = 0;
+
         int n = Integer.parseInt(st.nextToken());
         int k = Integer.parseInt(st.nextToken());
 
-        if (n >= k) {
-            System.out.println(0);
-            return;
-        }
-
-        int[] plug = new int[n];
-        int[] arr = new int[k];
-        int[] visited = new int[k + 1];
-
+        List<Integer> list = new ArrayList<>();
+        Set<Integer> set = new HashSet<>();
         st = new StringTokenizer(br.readLine());
         for (int i = 0; i < k; ++i) {
-            int value = Integer.parseInt(st.nextToken());
-            arr[i] = value;
-            visited[value]++;
+            list.add(Integer.parseInt(st.nextToken()));
         }
+
+        int count = 0;
         for (int i = 0; i < k; ++i) {
-            int min = Integer.MAX_VALUE;
-            int idx = 0;
-            boolean flag = false;
+            //플러그에 이미 꽂혀있는 경우
+            if (set.contains(list.get(i))) continue;
 
-            for (int j = 0; j < n; ++j) {
-                if (plug[j] == arr[i]) {
-                    visited[arr[i]]--;
-                    flag = true;
-                    break;
+            //플러그에 아무것도 꽂혀있지않은경우
+            if (set.size() < n) {
+                set.add(list.get(i));
+                continue;
+            }
+
+            //플러그를 교체해야하는경우
+            int max = -1;
+            int idx = -1;
+            List<Integer> subList = list.subList(i + 1, k);
+            for (int s : set) {
+                int tmp = 0;
+                if (subList.contains(s)) {
+                    tmp = subList.indexOf(s) + 1;
+                } else {
+                    tmp = Integer.MAX_VALUE;
                 }
-                if (plug[j] == 0) {
-                    plug[j] = arr[i];
-                    visited[arr[i]]--;
-                    flag = true;
-                    break;
+
+                if (tmp > max) {
+                    max = tmp;
+                    idx = s;
                 }
             }
-            if(flag) continue;
-
-            for (int j = 0; j < n; ++j) {
-                if (min > visited[plug[j]]) {
-                    min = visited[plug[j]];
-                    idx = j;
-                }
-            }
-            plug[idx] = arr[i];
-            visited[arr[i]]--;
+            set.remove(idx);
+            set.add(list.get(i));
             count++;
         }
 
