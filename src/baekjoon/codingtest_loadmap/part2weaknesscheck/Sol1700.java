@@ -1,34 +1,63 @@
 package baekjoon.codingtest_loadmap.part2weaknesscheck;
 
 import java.util.*;
+import java.io.*;
 
 public class Sol1700 {
     //멀티탭 스케줄링
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int k = sc.nextInt();
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int count = 0;
+        int n = Integer.parseInt(st.nextToken());
+        int k = Integer.parseInt(st.nextToken());
+
+        if (n >= k) {
+            System.out.println(0);
+            return;
+        }
+
+        int[] plug = new int[n];
         int[] arr = new int[k];
-        HashMap<Integer, Integer> map = new HashMap<>();
+        int[] visited = new int[k + 1];
+
+        st = new StringTokenizer(br.readLine());
         for (int i = 0; i < k; ++i) {
-            arr[i] = sc.nextInt();
+            int value = Integer.parseInt(st.nextToken());
+            arr[i] = value;
+            visited[value]++;
         }
         for (int i = 0; i < k; ++i) {
-            if(map.size() <n) {
-                map.put(arr[i], 0);
-                continue;
-            }
-            if(map.containsKey(arr[i])) continue;
+            int min = Integer.MAX_VALUE;
+            int idx = 0;
+            boolean flag = false;
 
-            Integer[] check = new Integer[k + 1];
-            for (int j = i; j < i + n; ++j) {
-                if(map.containsKey(arr[j])){
-                    check[arr[j]]++;
+            for (int j = 0; j < n; ++j) {
+                if (plug[j] == arr[i]) {
+                    visited[arr[i]]--;
+                    flag = true;
+                    break;
+                }
+                if (plug[j] == 0) {
+                    plug[j] = arr[i];
+                    visited[arr[i]]--;
+                    flag = true;
+                    break;
                 }
             }
+            if(flag) continue;
 
-            Arrays.sort(check);
-
+            for (int j = 0; j < n; ++j) {
+                if (min > visited[plug[j]]) {
+                    min = visited[plug[j]];
+                    idx = j;
+                }
+            }
+            plug[idx] = arr[i];
+            visited[arr[i]]--;
+            count++;
         }
+
+        System.out.println(count);
     }
 }
