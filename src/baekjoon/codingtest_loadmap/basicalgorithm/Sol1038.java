@@ -1,43 +1,34 @@
 package baekjoon.codingtest_loadmap.basicalgorithm;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class Sol1038 {
+    static ArrayList<Long> list;
+
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        long[] arr = new long[1000001];
+        Scanner scan = new Scanner(System.in);
 
-        for (int i = 0; i <= 9; ++i) {
-            arr[i] = i;
-        }
+        int n = scan.nextInt();
+        list = new ArrayList<>();
 
-        if (n == 0) {
-            System.out.println(0);
-            return;
-        }
-
-        int idx = 10;
-        for (long i = 10; i <= 9876543210L; ++i) {
-            long tmp = i;
-            long value = tmp % 10;
-            tmp /= 10;
-            boolean flag = false;
-            while (value < tmp % 10) {
-                value = tmp % 10;
-                tmp /= 10;
-                if (tmp == 0) {
-                    flag = true;
-                    break;
-                }
+        if(n <= 10) System.out.println(n);
+        else if(n > 1022) System.out.println("-1");
+        else {
+            for(int i = 0; i < 10; i++) {
+                bp(i, 1);
             }
-            if (flag) {
-                arr[idx] = i;
-                idx++;
-            }
-        }
+            Collections.sort(list);
 
-        if (arr[n] == 0) System.out.println(-1);
-        else System.out.println(arr[n]);
+            System.out.println(list.get(n));
+        }
+    }
+
+    public static void bp(long num, int idx) {
+        if(idx > 10) return;
+
+        list.add(num);
+        for(int i = 0; i < num % 10; i++) {
+            bp((num * 10) + i, idx + 1);
+        }
     }
 }
