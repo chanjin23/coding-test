@@ -1,40 +1,38 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int N;
-    static int [][] map;
-    static long [][] dp;
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        N = Integer.parseInt(br.readLine());
-        map = new int[N][N]; //
-        dp = new long[N][N];
+    static ArrayList<Long> list;
 
-        for (int i = 0; i < N; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            for (int j = 0; j < N; j++) {
-                map[i][j] = Integer.parseInt(st.nextToken());
-            }
-        }
+    public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
 
-        dp[0][0] = 1;
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                if (dp[i][j] > 0) {
-                    int val = map[i][j];
-                    if (val > 0) {
-                        if (isValid(i + val)) dp[i + val][j] += dp[i][j];
-                        if (isValid(j + val)) dp[i][j + val] += dp[i][j];
-                    }
-                }
+        int n = scan.nextInt();
+        list = new ArrayList<>();
+
+        if(n <= 10) System.out.println(n);
+        else if(n > 1022) System.out.println("-1");
+        else {
+            for(int i = 0; i < 10; i++) {
+                bp(i, 1);
             }
+            Collections.sort(list);
+
+            System.out.println(list.get(n));
         }
-        System.out.print(dp[N-1][N-1]);
     }
-    static boolean isValid(int val) {
-        return val < N;
+
+    public static void bp(long num, int idx) {
+        if(idx > 10) return;
+
+        list.add(num);
+        for(int i = 0; i < num % 10; i++) {
+            bp((num * 10) + i, idx + 1);
+        }
     }
 }
