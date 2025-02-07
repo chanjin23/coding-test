@@ -1,44 +1,47 @@
 package baekjoon.codingtest_loadmap.dfs_bfs;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
 
 public class Sol2606 {
     //바이러스
-    static int node,count;
-    static boolean[] check;
-    static int[][] arr;
+    static int n, m, answer;
+    static List<List<Integer>> list;
+    static int[] arr;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        node = Integer.parseInt(br.readLine());
-        int line = Integer.parseInt(br.readLine());
+        n = Integer.parseInt(br.readLine());
+        m = Integer.parseInt(br.readLine());
 
-        arr = new int[node + 1][node + 1];
-        check = new boolean[node + 1];
+        list = new ArrayList<>();
+        arr = new int[n + 1];
+        answer = 0;
 
-        for (int i = 0; i < line; ++i) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int first = Integer.parseInt(st.nextToken());
-            int last = Integer.parseInt(st.nextToken());
-            arr[first][last] = arr[last][first] = 1;
+        for (int i = 0; i <= n; ++i) {
+            list.add(new ArrayList<>());
         }
 
-        check[1] = true;
-        count=0;
+        for (int i = 0; i < m; ++i) {
+            StringTokenizer st = new StringTokenizer(br.readLine());
+            int node1 = Integer.parseInt(st.nextToken());
+            int node2 = Integer.parseInt(st.nextToken());
+            list.get(node1).add(node2);
+            list.get(node2).add(node1);
+        }
+
+        arr[1] = 1;
         dfs(1);
 
-        System.out.println(count);
+        System.out.println(answer);
     }
 
-    private static void dfs(int nodeNumber) {
-        for (int i = 1; i <= node; ++i) {
-            if (arr[nodeNumber][i] == 1 && !check[i]) {
-                check[i] = true;
-                count++;
+    public static void dfs(int node) {
+        for (int i : list.get(node)) {
+            if (arr[i] == 0) {
+                arr[i] = 1;
+                answer++;
                 dfs(i);
             }
         }
