@@ -1,56 +1,58 @@
 package baekjoon.codingtest_loadmap.dfs_bfs;
 
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
+import java.io.*;
 
 public class Sol12851 {
     //숨바꼭질2
-    static int n, k,minCount,answer;
+    static int n, m, count, min;
+    static int[] check;
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        n = sc.nextInt();
-        k = sc.nextInt();
 
-        if(n>=k){
-            System.out.println(n-k);
+        n = sc.nextInt();
+        m = sc.nextInt();
+        check = new int[100001];
+        count = 0;
+
+        if (n >= m) {
+            System.out.println(n - m);
             System.out.println(1);
             return;
         }
 
-        int tmp=k-n;
-        minCount=0;
-        while(tmp!=1){
-            if (tmp % 2 == 1) {
-                tmp--;
-            } else {
-                tmp/=2;
-            }
-            minCount++;
-        }
+        bfs();
 
-        if(n==0){
-            minCount++;
-            dfs(1, 1);
-        }else{
-            dfs(n, 0);
-        }
-
-
-        System.out.println(minCount);
-        System.out.println(answer);
+        System.out.println(check[m]);
+        System.out.println(count);
     }
 
-    private static void dfs(int num, int count) {
-        if(minCount <count) return;
-        if (num == k &&minCount==count) {
-            answer++;
-            return;
-        }
-        if(num>k || count==0){
-            dfs(num - 1, count + 1);
-        }else{
-            dfs(num * 2, count + 1);
-            dfs(num + 1, count + 1);
+    public static void bfs() {
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(n);
+        while (!q.isEmpty()) {
+            int now = q.poll();
+            for (int i = 0; i < 3; ++i) {
+                int next = 0;
+
+                if (i == 0) next = now * 2;
+                else if (i == 1) next = now + 1;
+                else next = now - 1;
+
+                if (next < 0 || next > 100000) continue;
+
+                if (next == m) {
+                    count++;
+                }
+
+                //bfs 이므로 다음값이 현재 값보다 더 커질수는 없음. 그렇기때문에 < 안해도됨.
+                if (check[next] == 0 || check[now] + 1 == check[next]) {
+                    q.offer(next);
+                    check[next] = check[now] + 1;
+                }
+
+            }
         }
     }
 }
