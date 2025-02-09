@@ -14,6 +14,7 @@ public class Sol12851 {
         n = sc.nextInt();
         m = sc.nextInt();
         check = new int[100001];
+        Arrays.fill(check, Integer.MAX_VALUE);
         count = 0;
 
         if (n >= m) {
@@ -31,8 +32,11 @@ public class Sol12851 {
     public static void bfs() {
         Queue<Integer> q = new LinkedList<>();
         q.offer(n);
+        check[n] = 0;
         while (!q.isEmpty()) {
             int now = q.poll();
+
+            if (check[m] < check[now]) return;
             for (int i = 0; i < 3; ++i) {
                 int next = 0;
 
@@ -42,14 +46,14 @@ public class Sol12851 {
 
                 if (next < 0 || next > 100000) continue;
 
-                if (next == m) {
-                    count++;
-                }
-
-                //bfs 이므로 다음값이 현재 값보다 더 커질수는 없음. 그렇기때문에 < 안해도됨.
-                if (check[next] == 0 || check[now] + 1 == check[next]) {
+                //bfs 이므로 다음값이 현재 값보다 더 커질수는 없음. 그렇기때문에 < 안해도됨. 근데 해도됨.
+                if (check[now] + 1 <= check[next]) {
                     q.offer(next);
                     check[next] = check[now] + 1;
+                    //이미 지나갔던 곳에 최소시간만 봤기때문에 count 를 해도 최단경로의 경우만 counting 됨.
+                    if (next == m) {
+                        count++;
+                    }
                 }
 
             }
