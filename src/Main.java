@@ -1,65 +1,58 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-    static String[] input;
-    static boolean[] alphabet;
-    static int k, answer = 0, n;
+    static int n, k;
+    static int[] check;
 
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        n = Integer.parseInt(st.nextToken());
-        k = Integer.parseInt(st.nextToken());
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
-        input = new String[n];
-        alphabet = new boolean[26];
-        alphabet['a' - 'a'] = true;
-        alphabet['c' - 'a'] = true;
-        alphabet['i' - 'a'] = true;
-        alphabet['n' - 'a'] = true;
-        alphabet['t' - 'a'] = true;
-        for (int i = 0; i < n; ++i) {
-            input[i] = br.readLine();
-        }
+        n = sc.nextInt();
+        k = sc.nextInt();
 
-        if (k < 5) {
-            System.out.println(0);
-            return;
-        } else if (k == 26) {
-            System.out.println(n);
+        check = new int[100001];
+        Arrays.fill(check, Integer.MAX_VALUE);
+
+        if (n >= k) {
+            System.out.println(n - k);
             return;
         }
 
-        dfs(0,0);
-        System.out.println(answer);
+        bfs();
+
+        System.out.println(check[k]);
     }
 
-    public static void dfs(int alpha, int level) {
-        if (level == k - 5) {
-            int total = 0;
-            for (int i = 0; i < n; ++i) {
-                boolean flag = false;
-                for (char c : input[i].toCharArray()) {
-                    if (!alphabet[c - 'a']) {
-                        flag = true;
-                        break;
-                    }
-                }
-                if (!flag) total++;
-            }
-            answer = Math.max(total, answer);
-        } else {
-            for (int i = alpha; i < 26; ++i) {
-                if (!alphabet[i]) {
-                    alphabet[i] = true;
-                    dfs(i,level + 1);
-                    alphabet[i] = false;
+    public static void bfs() {
+        Queue<Integer> q = new LinkedList<>();
+
+        q.offer(n);
+        check[n] = 0;
+
+        while (!q.isEmpty()) {
+            int now = q.poll();
+
+            //bfs 이므로 check 값이 일정이상이라는건 이미 최소경로는 다구했다는의미이므로 return
+            if (check[now] >= check[k]) return;
+
+            for (int i = 0; i < 3; ++i) {
+                int next;
+
+                if (i == 0) next = now * 2;
+                else if (i == 1) next = now + 1;
+                else next = now - 1;
+
+                if (next < 0 || next > 100000) continue;
+
+                if (check[now] + 1 < check[next] && i != 0) {
+                    q.offer(next);
+                    check[next] = check[now] + 1;
+                } else if (check[now] < check[next] && i == 0) {
+                    q.offer(next);
+                    check[next] = check[now];
                 }
             }
         }
