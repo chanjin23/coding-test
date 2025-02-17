@@ -1,25 +1,32 @@
 package baekjoon.codingtest_loadmap.part1basic;
 
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
+import java.io.*;
 
 public class Sol3460 {
     //이진수
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Scanner sc = new Scanner(System.in);
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         int t = sc.nextInt();
         for (int i = 0; i < t; ++i) {
             int n = sc.nextInt();
-            int count=0;
+            int idx = 0;
+            List<Integer> list = new ArrayList<>();
             while (n > 0) {
                 if (n % 2 == 1) {
-                    System.out.print(count+" ");
+                    list.add(idx);
                 }
-                n/=2;
-                count++;
+                n /= 2;
+                idx++;
             }
-            System.out.println();
+            for (int value : list) {
+                bw.write(value + " ");
+            }
+            bw.write("\n");
         }
+        bw.flush();
+        bw.close();
     }
 }
