@@ -9,29 +9,47 @@ public class Sol14719 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int total = 0;
-        int h = Integer.parseInt(st.nextToken());
-        int w = Integer.parseInt(st.nextToken());
-        int[] height = new int[w];
+        int x = Integer.parseInt(st.nextToken());
+        int y = Integer.parseInt(st.nextToken());
+        int[][] arr = new int[x][y];
+        int answer = 0;
 
         st = new StringTokenizer(br.readLine());
-        for (int i = 0; i < w; ++i) {
-            height[i] = Integer.parseInt(st.nextToken());
+        for (int i = 0; i < y; ++i) {
+            int n = Integer.parseInt(st.nextToken());
+            for (int j = 0; j < n; ++j) {
+                arr[j][i] = 1;
+            }
         }
 
-        for (int i = 1; i < w - 1; ++i) {
-            int lt = 0;
-            int rt = 0;
-            for (int j = i - 1; j >= 0; j--) {
-                lt = Math.max(height[j], lt);
+        for (int i = 0; i < x; ++i) {
+            int first = 0;
+            int last = 0;
+            int count = 0;
+
+            for (int j = 0; j < y; ++j) {
+                if (arr[i][j] == 1) {
+                    first = j;
+                    break;
+                }
             }
-            for (int j = i + 1; j < w; ++j) {
-                rt = Math.max(height[j], rt);
+            for (int j = y - 1; j >= 0; --j) {
+                if (arr[i][j] == 1) {
+                    last = j;
+                    break;
+                }
             }
 
-            int rain = Math.min(lt, rt) - height[i];
-            if(rain>0) total += rain;
+            if (first < last) {
+                for (int j = first + 1; j < last; ++j) {
+                    if (arr[i][j] == 0) {
+                        count++;
+                    }
+                }
+                answer += count;
+            }
         }
-        System.out.println(total);
+
+        System.out.println(answer);
     }
 }
