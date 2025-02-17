@@ -1,70 +1,51 @@
 package baekjoon.codingtest_loadmap.part2weaknesscheck;
 
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
 
 public class Sol2504 {
     //괄호의 값
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        String n = sc.nextLine();
-
-        String[] strs = n.split("");
-
-        int total = 0;
+        String[] strs = sc.nextLine().split("");
+        int answer = 0;
         Stack<String> stack = new Stack<>();
-        for (int i = 0; i < strs.length; ++i) {
-            String str = strs[i];
-            int totalTmp = 0;
-            try {
-                if (str.equals("(") || str.equals("[")) {
-                    stack.push(str);
-                } else if (str.equals(")")) {
-                    while (true) {
-                        String tmp = stack.pop();
-                        if (tmp.equals("(")) {
-                            if (totalTmp == 0) stack.push("2");
-                            else {
-                                int i1 = 2 * totalTmp;
-                                stack.push(String.valueOf(i1));
-                            }
-                            break;
-                        } else {
-                            int num = Integer.parseInt(tmp);
-                            totalTmp += num;
-                        }
-                    }
-                } else {
-                    while (true) {
-                        String tmp = stack.pop();
-                        if (tmp.equals("[")) {
-                            if (totalTmp == 0) stack.push("3");
-                            else {
-                                int i1 = 3 * totalTmp;
-                                stack.push(String.valueOf(i1));
-                            }
-                            break;
-                        } else {
-                            int num = Integer.parseInt(tmp);
-                            totalTmp += num;
-                        }
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println(0);
-                return;
-            }
-        }   //for
+        int total = 1;
 
-        try {
-            for (String s : stack) {
-                total += Integer.parseInt(s);
+        for (int i = 0; i < strs.length; ++i) {
+            if (strs[i].equals("(")) {
+                stack.push("(");
+                total *= 2;
+            } else if (strs[i].equals("[")) {
+                stack.push("[");
+                total *= 3;
+            } else if (strs[i].equals(")")) {
+                if (stack.isEmpty() || stack.peek().equals("[")) {
+                    System.out.println(0);
+                    return;
+                } else {
+                    //처음에만 더해준다.
+                    if (strs[i - 1].equals("(")) {
+                        answer += total;
+                    }
+                    stack.pop();
+                    total /= 2;
+                }
+            } else {
+                if (stack.isEmpty() || stack.peek().equals("(")) {
+                    System.out.println(0);
+                    return;
+                } else {
+                    if (strs[i - 1].equals("[")) {
+                        answer += total;
+                    }
+                    stack.pop();
+                    total /= 3;
+                }
             }
-        } catch (Exception e) {
-            System.out.println(0);
-            return;
         }
-        System.out.println(total);
+
+        if(!stack.isEmpty()) System.out.println(0);
+        else System.out.println(answer);
     }
 }
