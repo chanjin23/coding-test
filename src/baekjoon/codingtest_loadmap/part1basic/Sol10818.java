@@ -1,9 +1,7 @@
 package baekjoon.codingtest_loadmap.part1basic;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
 
 public class Sol10818 {
     //최소, 최대
@@ -11,15 +9,15 @@ public class Sol10818 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int n = Integer.parseInt(br.readLine());
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
+        int[] arr = new int[n];
         int max = Integer.MIN_VALUE;
         int min = Integer.MAX_VALUE;
 
+        StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < n; ++i) {
-            int value = Integer.parseInt(st.nextToken());
-            max = Math.max(max, value);
-            min = Math.min(min, value);
+            arr[i] = Integer.parseInt(st.nextToken());
+            max = Math.max(max, arr[i]);
+            min = Math.min(min, arr[i]);
         }
 
         System.out.println(min + " " + max);
