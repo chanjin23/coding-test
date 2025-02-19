@@ -1,60 +1,44 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
+import java.io.*;
 
 public class Main {
-    static int n, k;
-    static int[] check;
+    static int n, m;
+    static int[] arr;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        n = sc.nextInt();
-        k = sc.nextInt();
-
-        check = new int[100001];
-        Arrays.fill(check, Integer.MAX_VALUE);
-
-        if (n >= k) {
-            System.out.println(n - k);
-            return;
+        n = Integer.parseInt(st.nextToken());
+        m = Integer.parseInt(st.nextToken());
+        arr = new int[n + 1];
+        for (int i = 1; i <= n; ++i) {
+            arr[i] = i;
         }
 
-        bfs();
+        for (int i = 0; i < m; ++i) {
+            st = new StringTokenizer(br.readLine());
+            int x = Integer.parseInt(st.nextToken());
+            int y = Integer.parseInt(st.nextToken());
+            union(x, y);
+        }
 
-        System.out.println(check[k]);
+        st = new StringTokenizer(br.readLine());
+        int friend1 = Integer.parseInt(st.nextToken());
+        int friend2 = Integer.parseInt(st.nextToken());
+
+        if (find(friend1) == find(friend2)) System.out.println("YES");
+        else System.out.println("NO");
     }
 
-    public static void bfs() {
-        Queue<Integer> q = new LinkedList<>();
+    public static void union(int x, int y) {
+        int a = find(x);
+        int b = find(y);
+        if (a != b) arr[a] = arr[b];
+    }
 
-        q.offer(n);
-        check[n] = 0;
-
-        while (!q.isEmpty()) {
-            int now = q.poll();
-
-            //bfs 이므로 check 값이 일정이상이라는건 이미 최소경로는 다구했다는의미이므로 return
-            if (check[now] >= check[k]) return;
-
-            for (int i = 0; i < 3; ++i) {
-                int next;
-
-                if (i == 0) next = now * 2;
-                else if (i == 1) next = now + 1;
-                else next = now - 1;
-
-                if (next < 0 || next > 100000) continue;
-
-                if (check[now] + 1 < check[next] && i != 0) {
-                    q.offer(next);
-                    check[next] = check[now] + 1;
-                } else if (check[now] < check[next] && i == 0) {
-                    q.offer(next);
-                    check[next] = check[now];
-                }
-            }
-        }
+    public static int find(int num) {
+        if (arr[num] == num) return num;
+        else return arr[num] = find(arr[num]);
     }
 }
