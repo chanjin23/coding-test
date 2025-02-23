@@ -42,15 +42,20 @@ public class Sol17086 {
         Queue<Point> q = new LinkedList<>();
         boolean[][] visited = new boolean[n][m];
         q.offer(new Point(x, y));
+        visited[x][y] = true;
         int cnt = 1;
         while (!q.isEmpty()) {
-            Point tmp = q.poll();
-            for (int i = 0; i < 8; ++i) {
-                int nx = tmp.x + dx[i];
-                int ny = tmp.y + dy[i];
-                if (nx >= 0 && nx < n && ny >= 0 && ny < m) {
-                    if (arr[nx][ny] == 1) return cnt;
-                    q.offer(new Point(nx, ny));
+            int len=q.size();
+            for (int i = 0; i < len; ++i) {
+                Point tmp = q.poll();
+                for (int j = 0; j < 8; ++j) {
+                    int nx = tmp.x + dx[j];
+                    int ny = tmp.y + dy[j];
+                    if (nx >= 0 && nx < n && ny >= 0 && ny < m && !visited[nx][ny]) {
+                        if (arr[nx][ny] == 1) return cnt;
+                        visited[nx][ny] = true;
+                        q.offer(new Point(nx, ny));
+                    }
                 }
             }
             cnt++;
